@@ -35,3 +35,22 @@ jobs:
           path: target/*.jar
           if-no-files-found: error
 
+
+
+  job2_download:
+    name: Job 2 - Download JAR
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: springboot-employee-jar
+          path: downloaded-jar
+
+      - name: Verify downloaded JAR
+        run: |
+          echo "Downloaded JAR files:"
+          ls -lh downloaded-jar/
+
