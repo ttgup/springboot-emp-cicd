@@ -1,0 +1,30 @@
+
+name: Spring Boot Employee CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Spring Boot Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean verify
+
