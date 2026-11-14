@@ -77,3 +77,31 @@ jobs:
         run: echo "Spring Boot Employee deployment completed successfully!"
 
 
+  job4_verify:
+    name: Job 4 - Verify Application
+    runs-on: ubuntu-latest
+    needs: job3_deploy
+
+    steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: springboot-employee-jar
+          path: downloaded-jar
+
+      - name: Start Spring Boot application
+        run: |
+          JAR_FILE=$(find downloaded-jar -name "*.jar" | head -n 1)
+          java -jar "$JAR_FILE" > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Check application process
+        run: |
+          sleep 10
+          if kill -0 $(cat app.pid); then
+            echo "Application started successfully"
+          else
+            cat app.log
+            exit 1
+          fi
+
