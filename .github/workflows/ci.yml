@@ -54,3 +54,26 @@ jobs:
           echo "Downloaded JAR files:"
           ls -lh downloaded-jar/
 
+  job3_deploy:
+    name: Job 3 - Deploy Application
+    runs-on: ubuntu-latest
+    needs: job2_download
+
+    steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: springboot-employee-jar
+          path: downloaded-jar
+
+      - name: Prepare deployment package
+        run: |
+          mkdir -p deployment
+          cp downloaded-jar/*.jar deployment/
+          echo "Deployment package prepared successfully"
+          ls -lh deployment/
+
+      - name: Deployment status
+        run: echo "Spring Boot Employee deployment completed successfully!"
+
+
