@@ -1,5 +1,5 @@
 
-name: Spring Boot Employee1 CI
+name: Spring Boot Employee-1 CI
 
 on:
   push:
